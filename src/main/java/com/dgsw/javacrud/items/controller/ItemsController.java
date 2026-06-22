@@ -3,6 +3,7 @@ package com.dgsw.javacrud.items.controller;
 
 import com.dgsw.javacrud.items.dto.ItemRequestDto;
 import com.dgsw.javacrud.items.dto.ItemResponseDto;
+import com.dgsw.javacrud.items.dto.ItemStatusDto;
 import com.dgsw.javacrud.items.entity.Item;
 import com.dgsw.javacrud.items.entity.ItemStatus;
 import com.dgsw.javacrud.items.service.ItemsService;
@@ -27,5 +28,10 @@ public class ItemsController {
     @GetMapping("/{id}")
     public ResponseEntity<ItemResponseDto> getItemById(@PathVariable Long id) {
         return  itemsService.getItemById(id);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ItemResponseDto> updateItemStatus(@PathVariable Long id, @RequestBody ItemStatusDto itemStatusDto) {
+        return itemsService.updateStatus(id, itemStatusDto);
     }
 }

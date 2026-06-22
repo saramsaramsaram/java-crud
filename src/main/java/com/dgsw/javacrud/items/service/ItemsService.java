@@ -2,6 +2,7 @@ package com.dgsw.javacrud.items.service;
 
 import com.dgsw.javacrud.items.dto.ItemRequestDto;
 import com.dgsw.javacrud.items.dto.ItemResponseDto;
+import com.dgsw.javacrud.items.dto.ItemStatusDto;
 import com.dgsw.javacrud.items.entity.Item;
 import com.dgsw.javacrud.items.entity.ItemStatus;
 import com.dgsw.javacrud.items.repository.ItemsRepository;
@@ -31,5 +32,13 @@ public class ItemsService {
     public ResponseEntity<ItemResponseDto> getItemById(Long id) {
         Item item =  itemsRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
         return ResponseEntity.ok(new ItemResponseDto(item.getId(), item.getName(), item.getCategory(), item.getStatus(), item.getBorrower(), item.getReturnDate()));
+    }
+
+    public ResponseEntity<ItemResponseDto> updateStatus(Long id, ItemStatusDto itemStatusDto) {
+        Item item =  itemsRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        item.setStatus(itemStatusDto.getStatus());
+
+        Item savedItem = itemsRepository.save(item);
+        return ResponseEntity.ok(new ItemResponseDto(savedItem.getId(), savedItem.getName(), savedItem.getCategory(), savedItem.getStatus(), savedItem.getBorrower(), savedItem.getReturnDate()));
     }
 }
