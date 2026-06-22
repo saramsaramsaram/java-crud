@@ -38,11 +38,12 @@ public class ItemsService {
     }
 
     public ResponseEntity<ItemResponseDto> updateStatus(Long id, ItemStatusDto itemStatusDto) {
-        Item item =  itemsRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        Item item = itemsRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
         item.setStatus(itemStatusDto.getStatus());
 
         Item savedItem = itemsRepository.save(item);
         return ResponseEntity.ok(new ItemResponseDto(savedItem.getId(), savedItem.getName(), savedItem.getCategory(), savedItem.getStatus(), savedItem.getBorrower(), savedItem.getReturnDate()));
+    }
     public ResponseEntity<List<ItemResponseDto>> getAllItems() {
         List<ItemResponseDto> items = itemsRepository.findAll().stream()
                 .map(item -> new ItemResponseDto(item.getId(), item.getName(), item.getCategory(), item.getStatus(), item.getBorrower(), item.getReturnDate()))
