@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ItemsService {
 
@@ -40,5 +43,10 @@ public class ItemsService {
 
         Item savedItem = itemsRepository.save(item);
         return ResponseEntity.ok(new ItemResponseDto(savedItem.getId(), savedItem.getName(), savedItem.getCategory(), savedItem.getStatus(), savedItem.getBorrower(), savedItem.getReturnDate()));
+    public ResponseEntity<List<ItemResponseDto>> getAllItems() {
+        List<ItemResponseDto> items = itemsRepository.findAll().stream()
+                .map(item -> new ItemResponseDto(item.getId(), item.getName(), item.getCategory(), item.getStatus(), item.getBorrower(), item.getReturnDate()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(items);
     }
 }

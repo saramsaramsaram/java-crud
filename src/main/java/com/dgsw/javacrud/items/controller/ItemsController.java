@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -19,6 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class ItemsController {
     @Autowired
     private ItemsService itemsService;
+
+    @GetMapping()
+    public ResponseEntity<List<ItemResponseDto>> getAllItems() {
+        return itemsService.getAllItems();
+    }
 
     @PostMapping()
     public ResponseEntity<ItemResponseDto> createItem(@RequestBody ItemRequestDto requestItem) {
