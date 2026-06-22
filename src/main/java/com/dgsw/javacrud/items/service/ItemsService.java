@@ -8,7 +8,6 @@ import com.dgsw.javacrud.items.repository.ItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class ItemsService {
@@ -16,12 +15,7 @@ public class ItemsService {
     @Autowired
     private ItemsRepository itemsRepository;
 
-    public String addItem(@RequestBody Item item) {
-        itemsRepository.save(item);
-        return "아이템이 성공적으로 추가되었습니다.";
-    }
-
-    public ResponseEntity<ItemResponseDto> createItem(@RequestBody ItemRequestDto itemRequestDto) {
+    public ResponseEntity<ItemResponseDto> createItem(ItemRequestDto itemRequestDto) {
         Item item = new Item();
         item.setName(itemRequestDto.getName());
         item.setCategory(itemRequestDto.getCategory());
@@ -32,5 +26,10 @@ public class ItemsService {
         Item savedItem = itemsRepository.save(item);
 
         return ResponseEntity.ok(new ItemResponseDto(savedItem.getId(), savedItem.getName(), savedItem.getCategory(), savedItem.getStatus(), savedItem.getBorrower(), savedItem.getReturnDate()));
+    }
+
+    public ResponseEntity<ItemResponseDto> getItemById(Long id) {
+        Item item =  itemsRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        return ResponseEntity.ok(new ItemResponseDto(item.getId(), item.getName(), item.getCategory(), item.getStatus(), item.getBorrower(), item.getReturnDate()));
     }
 }
