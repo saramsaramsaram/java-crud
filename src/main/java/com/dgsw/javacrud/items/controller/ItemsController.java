@@ -4,8 +4,6 @@ package com.dgsw.javacrud.items.controller;
 import com.dgsw.javacrud.items.dto.ItemRequestDto;
 import com.dgsw.javacrud.items.dto.ItemResponseDto;
 import com.dgsw.javacrud.items.dto.ItemStatusDto;
-import com.dgsw.javacrud.items.entity.Item;
-import com.dgsw.javacrud.items.entity.ItemStatus;
 import com.dgsw.javacrud.items.service.ItemsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +38,15 @@ public class ItemsController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<ItemResponseDto> updateItemStatus(@PathVariable Long id, @RequestBody ItemStatusDto itemStatusDto) {
         return itemsService.updateStatus(id, itemStatusDto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemResponseDto> updateItem(@PathVariable Long id, @RequestBody ItemRequestDto itemRequestDto) {
+        return itemsService.updateItem(id, itemRequestDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
+        return itemsService.deleteItem(id);
     }
 }

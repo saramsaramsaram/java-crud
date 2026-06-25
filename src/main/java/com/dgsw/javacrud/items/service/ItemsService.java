@@ -50,4 +50,21 @@ public class ItemsService {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(items);
     }
+
+    public ResponseEntity<ItemResponseDto> updateItem(Long id, ItemRequestDto itemRequestDto) {
+        Item item = itemsRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        item.setName(itemRequestDto.getName());
+        item.setCategory(itemRequestDto.getCategory());
+        item.setBorrower(itemRequestDto.getBorrower());
+        item.setReturnDate(itemRequestDto.getReturnDate());
+
+        Item savedItem = itemsRepository.save(item);
+        return ResponseEntity.ok(new ItemResponseDto(savedItem.getId(), savedItem.getName(), savedItem.getCategory(), savedItem.getStatus(), savedItem.getBorrower(), savedItem.getReturnDate()));
+    }
+
+    public ResponseEntity<Void> deleteItem(Long id) {
+        itemsRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        itemsRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
